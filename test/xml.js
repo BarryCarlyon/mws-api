@@ -145,5 +145,59 @@ describe('xml', () => {
                 expect(FeedContent).to.equal(xml);
             });
         });
+
+        describe('_POST_PAYMENT_ADJUSTMENT_DATA_', () => {
+            it('should create an adjustment without action with two price items and a promo adjust', () => {
+                const FeedContent = Feeds._POST_PAYMENT_ADJUSTMENT_DATA_({
+                    MerchantIdentifier: '67890'
+                }, {
+                    MessageID: 1,
+                    MerchantOrderID: 1234567,
+
+                    AdjustedItem: [
+                        {
+                            AmazonOrderItemCode: 123456,
+                            AdjustmentReason: 'GeneralAdjustment',
+                            ItemPriceAdjustments: {
+                                Component: [
+                                    {
+                                        Type: 'Principal',
+                                        Amount: {
+                                            currency: 'GBP',
+                                            Value: '5.00'
+                                        }
+                                    },
+                                    {
+                                        Type: 'Tax',
+                                        Amount: {
+                                            currency: 'GBP',
+                                            Value: '1.00'
+                                        }
+                                    }
+                                ]
+                            },
+
+                            PromotionAdjustments: {
+                                PromotionClaimCode: 'ABC123',
+                                MerchantPromotionID: 123456788,
+                                Component: {
+                                    Type: 'Principal',
+                                    Amount: {
+                                        currency: 'GBP',
+                                        Value: '-1.00'
+                                    }
+                                }
+                            },
+
+                            QuantityCancelled: 5,
+                            Quantity: 5
+                        }
+                    ]
+                });
+
+                const xml = '<?xml version="1.0" encoding="ISO-8859-1"?><AmazonEnvelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="amzn-envelope.xsd"><Header><DocumentVersion>1.01</DocumentVersion><MerchantIdentifier>67890</MerchantIdentifier></Header><MessageType>OrderAdjustment</MessageType><Message><MessageID>1</MessageID><OrderAdjustment><MerchantOrderID>1234567</MerchantOrderID><AdjustedItem><AmazonOrderItemCode>123456</AmazonOrderItemCode><AdjustmentReason>GeneralAdjustment</AdjustmentReason><ItemPriceAdjustments><Component><Type>Principal</Type><Amount currency="GBP">5.00</Amount></Component><Component><Type>Tax</Type><Amount currency="GBP">1.00</Amount></Component></ItemPriceAdjustments><PromotionAdjustments><PromotionClaimCode>ABC123</PromotionClaimCode><MerchantPromotionID>123456788</MerchantPromotionID><Component><Type>Principal</Type><Amount currency="GBP">-1.00</Amount></Component></PromotionAdjustments><QuantityCancelled>5</QuantityCancelled><Quantity>5</Quantity></AdjustedItem></OrderAdjustment></Message></AmazonEnvelope>';
+                expect(FeedContent).to.equal(xml);
+            });
+        });
     });
 });
