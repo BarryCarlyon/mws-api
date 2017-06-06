@@ -164,14 +164,14 @@ describe('xml', () => {
                                         Type: 'Principal',
                                         Amount: {
                                             currency: 'GBP',
-                                            Value: '5.00'
+                                            value: '5.00'
                                         }
                                     },
                                     {
                                         Type: 'Tax',
                                         Amount: {
                                             currency: 'GBP',
-                                            Value: '1.00'
+                                            value: '1.00'
                                         }
                                     }
                                 ]
@@ -184,7 +184,7 @@ describe('xml', () => {
                                     Type: 'Principal',
                                     Amount: {
                                         currency: 'GBP',
-                                        Value: '-1.00'
+                                        value: '-1.00'
                                     }
                                 }
                             },
